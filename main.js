@@ -55,6 +55,7 @@ class App {
   #minutes = 0;
   #seconds = 0;
   #currentWorkout; 
+  _watchId;
 
   constructor() {
     this._getPosition();
@@ -87,7 +88,6 @@ class App {
     this.#markerA = L.marker(this.#pointA).addTo(this.#map);
 
     this._updateCurrentPosition();
-    setInterval(this._updateCurrentPosition.bind(this), 4000);
 
     this._renderWorkoutMarker();
   }
@@ -131,38 +131,43 @@ class App {
 
   _updateCurrentPosition() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          let lat = position.coords.latitude;
-          let long = position.coords.longitude;
-          this.#pointCurrent = [lat, long];
+        this._watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                let lat = position.coords.latitude;
+                let long = position.coords.longitude;
+                this.#pointCurrent = [lat, long];
 
-          if (this.#markerCurrent) {
-            this.#map.removeLayer(this.#markerCurrent);
-          }
+                if (this.#markerCurrent) {
+                    this.#map.removeLayer(this.#markerCurrent);
+                }
 
-          const currentPositionIcon = L.icon({
-            iconUrl: "./user.png",
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-          });
+                const currentPositionIcon = L.icon({
+                    iconUrl: "./user.png",
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                });
 
-          this.#markerCurrent = L.marker(this.#pointCurrent, {
-            icon: currentPositionIcon,
-          }).addTo(this.#map);
+                this.#markerCurrent = L.marker(this.#pointCurrent, {
+                    icon: currentPositionIcon,
+                }).addTo(this.#map);
 
-          if (this.#pointA && this.#currentWorkout) {
-            this.#distance = this.#map.distance(this.#pointA, this.#pointCurrent);
-            this.#currentWorkout.distance = this.#distance / 1000; 
-            this.#currentWorkout.speed = this._calculateSpeed();
-            this.#currentWorkout.calories = this._calculateCalories();
-            this._updateUI();
-          }
-        },
-        function () {
-          alert("Cannot get your location");
-        }
-      );
+                if (this.#pointA && this.#currentWorkout) {
+                    this.#distance = this.#map.distance(this.#pointA, this.#pointCurrent);
+                    this.#currentWorkout.distance = this.#distance / 1000;
+                    this.#currentWorkout.speed = this._calculateSpeed();
+                    this.#currentWorkout.calories = this._calculateCalories();
+                    this._updateUI();
+                }
+            },
+            function () {
+                alert("Cannot get your location");
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 27000,
+            }
+        );
     }
   }
 
@@ -200,9 +205,9 @@ class App {
   }
 
   _calculateCalories() {
-    const MET = 8; // will change
-    const weight = 70; 
-    const durationInHours = this.#seconds / 3600;
+    const MET = 2; // will change
+    const weight = 55; 
+    const durationInHours = this.#seconds/3600 ;  //for real project it must divide by 3600
     return MET * weight * durationInHours;
   }
 
@@ -237,15 +242,16 @@ class App {
 
   _attachEventHandlers() {
     document.querySelector('.start').addEventListener('click', () => {
-      const form = document.querySelector('.form__input');
-      const type = form.value.toLowerCase();
-      this._newWorkout(type);
-      this._timer();
+        const form = document.querySelector('.form__input');
+        const type = form.value.toLowerCase();
+        this._newWorkout(type);
+        this._timer();
     });
 
     document.querySelector('.stop').addEventListener('click', () => {
-      clearInterval(this.#timerInterval);
-      this._saveWorkoutsToLocalStorage();
+        clearInterval(this.#timerInterval);
+        navigator.geolocation.clearWatch(this._watchId);
+        this._saveWorkoutsToLocalStorage();
     });
   }
 }
