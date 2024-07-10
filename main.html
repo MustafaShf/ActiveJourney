@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="./src/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+
+    
+    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script defer src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+</head>
+<style>
+    .leaflet-routing-container .leaflet-routing-alt {
+    color: rgb(0, 0, 0); /* Change this to your desired text color */
+  }
+</style>
+<body class="bg-gray-900 flex flex-col justify-between">
+    <nav class="container mx-auto px-6 py-4 text-slate-100 flex justify-between items-center">
+        <div class="logo text-xl font-bold">
+            <a href="#" class="hover:text-indigo-500">LOGO</a>
+        </div>
+        <div class="space-x-6">
+            <a href="#" class="hover:text-indigo-500">Dashboard</a>
+            <a href="#" class="hover:text-indigo-500">About</a>
+            <a href="#" class="hover:text-indigo-500">Contact Us</a>
+        </div>
+    </nav>
+    <div class="container mx-auto flex justify-center ">
+        <div class="flex flex-row w-full h-[85vh] bg-gray-800 rounded-lg shadow-lg">
+            <div class="leftSide w-4/12 bg-gray-700 p-4 rounded-l-lg text-white flex flex-col items-center justify-center">
+                <div class="inside_Left flex flex-col items-center justify-between h-[60vh] space-y-6">
+                    <div class="options flex flex-col items-start">
+                        <label class="form__label text-lg font-semibold mb-2">Type</label>
+                        <select class="form__input bg-gray-800 text-white rounded p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option class="text-gray-700" value="running">Running</option>
+                            <option class="text-gray-700" value="cycling">Cycling</option>
+                            <option class="text-gray-700" value="walking">Walking</option>
+                        </select>
+                    </div>
+                    <div class="timer flex flex-col items-center">
+                        <label class="timer-text text-4xl font-bold mb-2">0</label>
+                        <label class="text-sm text-gray-400">Timer</label>
+                    </div>
+                    <div class="distance flex flex-col items-center">
+                        <label class="distance-text text-4xl font-bold mb-2">0</label>
+                        <label class="text-sm text-gray-400">Distance</label>
+                    </div>
+                    <div class="calories flex flex-col items-center">
+                        <label class="calories-text text-4xl font-bold mb-2">0</label>
+                        <label class="text-sm text-gray-400">Calories</label>
+                    </div>
+                    <div class="speed flex flex-col items-center">
+                        <label class="speed-text text-4xl font-bold mb-2">0</label>
+                        <label class="text-sm text-gray-400">Speed</label>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button class="start bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Start</button>
+                        <button class="stop bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Stop</button>
+                    </div>
+                </div>
+            </div>
+            <div id="map" class="rightSide map w-8/12 bg-gray-600 p-4 rounded-r-lg text-white flex items-center justify-center">
+                Right Content
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
