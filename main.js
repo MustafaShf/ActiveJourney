@@ -59,6 +59,7 @@ class App {
   constructor() {
     this._getPosition();
     this._attachEventHandlers();
+    this._loadWorkoutsFromLocalStorage();
   }
 
   _getPosition() {
@@ -86,7 +87,7 @@ class App {
     this.#markerA = L.marker(this.#pointA).addTo(this.#map);
 
     this._updateCurrentPosition();
-    setInterval(this._updateCurrentPosition.bind(this), 30000);
+    setInterval(this._updateCurrentPosition.bind(this), 4000);
 
     this._renderWorkoutMarker();
   }
@@ -211,6 +212,29 @@ class App {
     document.querySelector('.speed-text').textContent = this.#currentWorkout.speed.toFixed(2);
   }
 
+  _saveWorkoutsToLocalStorage() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+  }
+
+  _loadWorkoutsFromLocalStorage() {
+    const data = JSON.parse(localStorage.getItem('workouts'));
+    if (data) {
+      this.#workouts = data.map(workout => {
+        let restoredWorkout;
+        if (workout.type === 'running') {
+          restoredWorkout = new Running(workout.distance, workout.duration, workout.coords, workout.calories, workout.speed);
+        } else if (workout.type === 'walking') {
+          restoredWorkout = new Walking(workout.distance, workout.duration, workout.coords, workout.calories, workout.speed);
+        } else if (workout.type === 'cycling') {
+          restoredWorkout = new Cycling(workout.distance, workout.duration, workout.coords, workout.calories, workout.speed);
+        }
+        restoredWorkout.date = new Date(workout.date);
+        restoredWorkout.id = workout.id;
+        return restoredWorkout;
+      });
+    }
+  }
+
   _attachEventHandlers() {
     document.querySelector('.start').addEventListener('click', () => {
       const form = document.querySelector('.form__input');
@@ -221,9 +245,9 @@ class App {
 
     document.querySelector('.stop').addEventListener('click', () => {
       clearInterval(this.#timerInterval);
+      this._saveWorkoutsToLocalStorage();
     });
   }
 }
 
 let app = new App();
-

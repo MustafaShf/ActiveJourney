@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="./src/output.css" rel="stylesheet">
+    <style>
+        .workout-box {
+            background-color: #1F2937; /* Slate-700 */
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            color: #FFFFFF;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .workout-box h3 {
+            font-size: 1.25rem; /* 20px */
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .workout-box p {
+            font-size: 1rem; /* 16px */
+            margin-bottom: 4px;
+        }
+        .workout-box .emoji {
+            font-size: 1.5rem; /* 24px */
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex flex-col justify-between">
+    <nav class="container mx-auto px-6 py-4 text-slate-100 flex justify-between items-center">
+        <div class="logo text-xl font-bold">
+            <a href="#" class="hover:text-indigo-500">ActiveJourney</a>
+        </div>
+        <div class="space-x-6">
+            <a href="dashboard.html" class="hover:text-indigo-500">Dashboard</a>
+            <a href="#" class="hover:text-indigo-500">About</a>
+            <a href="#" class="hover:text-indigo-500">Contact Us</a>
+        </div>
+    </nav>
+    <div class="container flex justify-center">
+        <div class="workout-logs h-[80vh] w-[70vh] bg-gray-800 rounded-lg p-6 overflow-y-auto">
+            <!-- Workout logs will be appended here -->
+        </div>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+</html>
